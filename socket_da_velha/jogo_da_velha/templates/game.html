@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% comment %} game.html {% endcomment %}
+{% load static %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="head">
+        <h1>SOCKET DA VELHA</h1>
+        <span>Você está jogando como o jogador <strong>{{char_choice}}</strong> na sala: <em>{{room_code}}</em></span>
+    </div>
+    <br />
+    <br />
+    <div id="game_board" room_code={{room_code}} char_choice={{char_choice}}>
+        <div class="square" data-index='0'></div>
+        <div class="square" data-index='1'></div>
+        <div class="square" data-index='2'></div>
+        <div class="square" data-index='3'></div>
+        <div class="square" data-index='4'></div>
+        <div class="square" data-index='5'></div>
+        <div class="square" data-index='6'></div>
+        <div class="square" data-index='7'></div>
+        <div class="square" data-index='8'></div>
+    </div>
+    <br />
+    <div id="alert_move" class="head">Vez do jogador: <strong>{{char_choice}}</strong></div>
+</div>
+{% endblock content %}
