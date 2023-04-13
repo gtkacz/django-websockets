@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,8 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -70,26 +69,9 @@ TEMPLATES = [
 ]
 
 # WSGI_APPLICATION = 'tic_tac_toe.wsgi.application'
-# Channels
 ASGI_APPLICATION = "tic_tac_toe.asgi.application"
 CHANNEL_LAYERS = {
     'default': {
-        ## Method 1: Via redis lab
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        # 'CONFIG': {
-        #     "hosts": [
-        #       'redis://h:le16Dn6dYwGHOZLF9vWxySxmQSIwE4Zz@redis-12573.c99.us-east-1-4.ec2.cloud.redislabs.com:12573' 
-        #     ],
-        # }
-        
-        ## Method 2: Via local redis
-        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        # 'CONFIG': {
-        #     # "hosts": [('127.0.0.1', 6379)],
-        # },
-        
-        ## Method 3: Via In-memory channel layer
-        
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
 }
@@ -138,9 +120,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-import os
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
