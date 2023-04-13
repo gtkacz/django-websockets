@@ -1,16 +1,13 @@
-let roomCode = document.getElementById("game_board").getAttribute("room_code");
-let char_choice = document.getElementById("game_board").getAttribute("char_choice");
+var roomCode = document.getElementById("game_board").getAttribute("room_code");
+var char_choice = document.getElementById("game_board").getAttribute("char_choice");
 
-let connectionString = 'ws://' + window.location.host + '/ws/play/' + roomCode + '/';
-console.log(connectionString)
-let gameSocket = new WebSocket(connectionString);
-
-let gameBoard = [
+var connectionString = 'ws://' + window.location.host + '/ws/play/' + roomCode + '/';
+var gameSocket = new WebSocket(connectionString);
+var gameBoard = [
     -1, -1, -1,
     -1, -1, -1,
     -1, -1, -1,
 ];
-
 winIndices = [
     [0, 1, 2],
     [3, 4, 5],
@@ -24,24 +21,22 @@ winIndices = [
 let moveCount = 0;
 let myturn = true;
 
-
 let elementArray = document.getElementsByClassName('square');
-for (let i = 0; i < elementArray.length; i++) {
+for (var i = 0; i < elementArray.length; i++) {
     elementArray[i].addEventListener("click", event => {
-        const index = event.path[0].getAttribute('data-index');
+        const index = event.composedPath()[0].getAttribute('data-index');
         if (gameBoard[index] == -1) {
             if (!myturn) {
-                alert("Wait for other to place the move")
+                alert("Espere até o outro jogador jogar.")
             }
             else {
                 myturn = false;
-                document.getElementById("alert_move").style.display = 'none';
+                document.getElementById("alert_move").style.display = 'none'; // Hide          
                 make_move(index, char_choice);
             }
         }
     })
 }
-
 
 function make_move(index, player) {
     index = parseInt(index);
@@ -54,42 +49,37 @@ function make_move(index, player) {
     }
 
     if (gameBoard[index] == -1) {
-
-
         moveCount++;
         if (player == 'X')
             gameBoard[index] = 1;
         else if (player == 'O')
             gameBoard[index] = 0;
         else {
-            alert("Invalid character choice");
+            alert("Peça inválida.");
             return false;
         }
         gameSocket.send(JSON.stringify(data))
     }
 
     elementArray[index].innerHTML = player;
-
     const win = checkWinner();
     if (myturn) {
-
         if (win) {
             data = {
                 "event": "END",
-                "message": `${player} is a winner. Play again?`
+                "message": `${player} ganhou a partida!`
             }
             gameSocket.send(JSON.stringify(data))
         }
         else if (!win && moveCount == 9) {
             data = {
                 "event": "END",
-                "message": "It's a draw. Play again?"
+                "message": "Deu velha!"
             }
             gameSocket.send(JSON.stringify(data))
         }
     }
 }
-
 
 function reset() {
     gameBoard = [
@@ -100,11 +90,10 @@ function reset() {
     moveCount = 0;
     myturn = true;
     document.getElementById("alert_move").style.display = 'inline';
-    for (let i = 0; i < elementArray.length; i++) {
+    for (var i = 0; i < elementArray.length; i++) {
         elementArray[i].innerHTML = "";
     }
 }
-
 
 const check = (winIndex) => {
     if (
@@ -114,7 +103,6 @@ const check = (winIndex) => {
     ) return true;
     return false;
 };
-
 
 function checkWinner() {
     let win = false;
@@ -130,11 +118,9 @@ function checkWinner() {
 }
 
 
-
 function connect() {
     gameSocket.onopen = function open() {
         console.log('WebSockets connection created.');
-
         gameSocket.send(JSON.stringify({
             "event": "START",
             "message": ""
@@ -147,10 +133,8 @@ function connect() {
             connect();
         }, 1000);
     };
-
+    // Sending the info about the room
     gameSocket.onmessage = function (e) {
-
-
         let data = JSON.parse(e.data);
         data = data["payload"];
         let message = data['message'];
@@ -179,6 +163,5 @@ function connect() {
         gameSocket.onopen();
     }
 }
-
 
 connect();

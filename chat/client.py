@@ -29,7 +29,7 @@ class Client:
                 data = self.socket.recv(1024)
 
                 if data.decode().upper() == 'QUIT':
-                    print('Conexão encerrada pelo cliente.')
+                    print('Conexão encerrada pelo servidor.')
                     break
 
                 print(f'Resposta do servidor: {data.decode()}')

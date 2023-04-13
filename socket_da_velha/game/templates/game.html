@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% comment %} game.html {% endcomment %}
 {% load static %}
 
 {% block content %}
@@ -25,3 +24,7 @@
     <div id="alert_move" class="head">Vez do jogador: <strong>{{char_choice}}</strong></div>
 </div>
 {% endblock content %}
+
+{% block javascript %}
+<script src = "{% static 'js/main.js' %}"></script>
+{% endblock javascript %}

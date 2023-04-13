@@ -58,8 +58,9 @@ h3 {
     color: #EEAF34;
 }
 
-select, option {
+select, option, input {
     color: black !important;
+    font-weight: normal !important;
 }
 
 label {
